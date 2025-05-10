@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #options-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        #options-container > div {
+            height: 60px;
+            width: 60px;
+            margin: 5px;
+            border-radius: 10px;
+            border: 2px solid black; /* Added border for better visibility */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="colour_code">rgb(255, 0, 0)</h1>
+    </div>
+    <div>Score: <span id="score">0</span></div>
+    <div id="options-container"></div>
+    <script>
+        const colourCodeContainer = document.getElementById("colour_code");
+        const optionContainer = document.getElementById("options-container");
+        const scoreContainer = document.getElementById('score');
+        let randomColour = null;
+        let score = 0;
+
+        function generateRandomNumberBetween(min, max) {
+            return min + Math.floor(Math.random() * (max - min + 1));
+        }
+
+        function generateRandomColourRGB() {
+            const red = generateRandomNumberBetween(0, 255);
+            const green = generateRandomNumberBetween(0, 255);
+            const blue = generateRandomNumberBetween(0, 255);
+            return `rgb(${red}, ${green}, ${blue})`;
+        }
+
+        function incrementScore() {
+            score++;
+            document.getElementById('score').innerText = score;
+        }
+
+        function validateResult(event) {
+            const selectedColour = event.target.style.backgroundColor;
+            if (selectedColour === randomColour) {
+                incrementScore();
+            } else {
+                score = 0;
+            }
+            window.localStorage.setItem("score", score);
+            startGame();
+        }
+
+        function startGame() {
+            score = Number(window.localStorage.getItem('score') ?? 0);
+            scoreContainer.innerText = score;
+            optionContainer.innerHTML = null;
+            randomColour = generateRandomColourRGB();
+            colourCodeContainer.innerText = randomColour;
+
+            const ansIndex = generateRandomNumberBetween(0, 5);
+
+            for (let i = 0; i < 6; i++) {
+                const div = document.createElement('div');
+                div.addEventListener('click', validateResult);
+                div.style.backgroundColor = i === ansIndex ? randomColour : generateRandomColourRGB();
+                optionContainer.append(div);
+            }
+        }
+
+        window.addEventListener('load', () => startGame());
+    </script>
+</body>
+</html>
