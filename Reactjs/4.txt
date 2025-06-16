@@ -1,0 +1,10 @@
+import React form "react";
+
+function HelloWorld(){
+    return <h1> Hello World </h1>;
+}
+
+Rules to make a component:
+
+1. Should return JSX(return html)
+2. Component name must start with uppercase letter
