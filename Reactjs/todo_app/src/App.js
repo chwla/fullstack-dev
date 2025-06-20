@@ -7,11 +7,11 @@ import './style.css'
 const App = () => {
   return (
     <div className="todo-container">
-      <Header />
-      <TodoItem />
-      <TodoItem />
-      <TodoItem />
-      <TodoItem />
+      <Header header="TODO"/>
+      <TodoItem text="DSA"/>
+      <TodoItem completed={true} text="Full Stack"/>
+      <TodoItem text="Machine Learning"/>
+      <TodoItem text="Cyber Security"/>
       <Button />
     </div>
   );
