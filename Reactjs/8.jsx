@@ -10,7 +10,7 @@
 
 import React, {useState} from 'react';
 function CounterComponent(){
-        const [count, setCount] = useState(0);
+        const [count, setCount] = useState(0); //count value is 0
     return (
         <div>
             <p>Count is {count}</p>
