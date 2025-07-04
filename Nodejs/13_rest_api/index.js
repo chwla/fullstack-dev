@@ -6,6 +6,15 @@ const PORT = 8000;
 //middleware
 app.use(express.urlencoded({ extended: false}));
 
+app.use((req, res, next)=>{
+    //Execute any code
+    //Make changes to the request and the response objects
+    //End the request-response cycle.
+    //Call the next middleware function in the stack.
+    console.log('Time:', Date.now());
+    next();
+});
+
 //ROUTES
 app.get("/api/users",(req,res)=>{
     return res.json(users);
