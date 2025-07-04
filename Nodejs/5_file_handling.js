@@ -2,10 +2,10 @@
 
 const fs = rqeuire("fs");
 
-//Sync
+//Sync Blocking req
 fs.writeFileSync("./test.txt", "Hello World");
 
-//Async
+//Async Non Blocking req
 fs.writeFile("./test.txt", "Hello World", (err)=>{});
 
 fs.readFileSync("./test.txt", "utf-8");
