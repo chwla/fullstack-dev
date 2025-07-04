@@ -1,0 +1,19 @@
+RESTFULL API
+
+Client send request, Server sends response
+
+1. Server Client Architecture
+
+    ssr- server side rendering
+
+    Json- key value pairs(server can send data like this, client reads it and renders it on their screen)
+
+    if client is always browser then html is better and faster, but if it is cross platform then use json.
+
+2. Always respect all http method
+    GET, POST, PUT, PATCH, DELETE
+
+    GET->get some data from server
+    POST->send and mutate some data in server
+    PUT->upload photo/file ie something new
+    PATCH->Update existing entry
