@@ -1,0 +1,6 @@
+https://www.sohamchawla.dev/
+
+
+Protocol: Hypertext Transfer Protocol Secure
+Domain: User friendly name of IP Address of server
+Path (/): HOmePage or Root Page
