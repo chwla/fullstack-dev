@@ -56,3 +56,27 @@ def get_post(id: int, response: Response):
         return {"post_detail": post}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail=f"Post with id: {id} was not found")
+
+
+@app.delete("/posts/{id}")
+def delete_post(id: int):
+    for i, p in enumerate(my_posts):
+        if p["id"] == id:
+            my_posts.pop(i) 
+            return {"message": "Post was successfully deleted"}
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Post with id {id} not found")
+    
+    
+@app.put("/posts/{id}")
+def update_post(id: int, updated_post: Post):
+    for i, p in enumerate(my_posts):
+        if p["id"] == id:
+            post_dict = updated_post.dict()
+            post_dict["id"] = id  # preserve original ID
+            my_posts[i] = post_dict  # update the post
+            return {"data": post_dict}
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Post with id {id} not found")
