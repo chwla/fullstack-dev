@@ -1,12 +1,38 @@
+from typing import Optional
 from fastapi import FastAPI
-from typing import Union
+from fastapi.params import Body
+from pydantic import BaseModel
 
 app = FastAPI()
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def root():
+    return{"message": "Hello World"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/posts")
+def get_posts():
+    return {"data": "This is your posts"}
+
+######################################################
+
+@app.post("/createposts")
+def create_posts(payLoad: dict = Body(...)):
+    print(payLoad)
+    return {"new_post": f"title {payLoad['title']} content: {payLoad['content']}"}
+
+
+#with pydantic (will do the validation on its own)
+
+class Post(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+    rating: Optional[int] = None
+
+@app.post("/create_posts")
+def create_posts2(new_post: Post):
+    print(new_post)
+    
+    return {"data": new_post}
+
+######################################################
