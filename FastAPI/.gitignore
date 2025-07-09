@@ -1,0 +1,35 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# VSCode settings (optional, if you use VSCode)
+.vscode/
+
+# Pytest cache
+.pytest_cache/
+
+# Mypy cache
+.mypy_cache/
+
+# Pydantic compiled files
+*.pydantic_cache/
+
+# Logs or temp files
+*.log
+*.tmp
+*.bak
+.DS_Store
+
+# Jupyter notebooks checkpoints (if ever used)
+.ipynb_checkpoints/
+
+# OS/system files
+Thumbs.db
