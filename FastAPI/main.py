@@ -2,6 +2,13 @@ from typing import Optional
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel 
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -23,7 +30,9 @@ def root():
 # Return all posts
 @app.get("/posts")
 def get_posts():
-    return {"data": my_posts}
+    cursor.execute("""SELECT * FROM posts """)
+    posts = cursor.fetchall
+    return {"data": posts}
 
 ######################################################
 
@@ -38,7 +47,6 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-    rating: Optional[int] = None
 
 # Create a new post with validation
 @app.post("/posts")
@@ -80,3 +88,20 @@ def update_post(id: int, updated_post: Post):
     
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail=f"Post with id {id} not found")
+
+while True:
+    try: 
+        conn = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        cursor_factory=RealDictCursor
+        )
+        cursor = conn.cursor()
+        print("Database connection was successful")
+        break
+    except Exception as error:
+        print("Connecting to Database failed")
+        print("Error: ", error)
+        time.sleep(2)
