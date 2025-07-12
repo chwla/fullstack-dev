@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
 from pydantic import BaseModel 
 import psycopg2
@@ -7,14 +7,17 @@ from psycopg2.extras import RealDictCursor
 import time
 from dotenv import load_dotenv
 import os
+from . import models
+from .database import engine, get_db
+from sqlalchemy.orm import Session
+from sqlalchemy import String
+
 
 load_dotenv()
 
-app = FastAPI()
+models.Base.metadata.create_all(bind=engine)
 
-# In-memory fake DB
-my_posts = [{"title": "aa", "content": "bb", "id": 1}, 
-            {"title": "bb", "content": "cc", "id": 2}]
+app = FastAPI()
 
 # Utility function to find a post by id
 def find_posts(id):
@@ -27,11 +30,18 @@ def find_posts(id):
 def root():
     return {"message": "Hello World"}
 
+
+@app.get('/sqlalchemy')
+def test_posts(db: Session = Depends(get_db)):
+    
+    posts = db.query(models.Post).all()
+    return{"data": posts}
+
 # Return all posts
 @app.get("/posts")
 def get_posts():
     cursor.execute("""SELECT * FROM posts """)
-    posts = cursor.fetchall
+    posts = cursor.fetchall()
     return {"data": posts}
 
 ######################################################
@@ -100,10 +110,10 @@ def update_post(id: int, post: Post):
     except Exception as e:
        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     
-    if update_post is None:
+    if updated_post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found")
 
-    return {"data", update_post}
+    return {"data", updated_post}
 
 
 while True:
